@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RaktSetu | Dispatcher Control Center</title>
+
+    <!-- Google Fonts: Inter & Outfit for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+
+<body>
+    <div class="ambient-background" aria-hidden="true">
+        <span class="ambient-orb orb-one"></span>
+        <span class="ambient-orb orb-two"></span>
+        <span class="ambient-orb orb-three"></span>
+        <span class="ambient-line line-one"></span>
+        <span class="ambient-line line-two"></span>
+        <span class="ambient-line line-three"></span>
+        <span class="ambient-dot dot-one"></span>
+        <span class="ambient-dot dot-two"></span>
+        <span class="ambient-dot dot-three"></span>
+        <span class="ambient-dot dot-four"></span>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-icon">🩸</div>
+            <div class="brand-text">
+                <h2>RaktSetu</h2>
+                <span>Emergency Network</span>
+            </div>
+        </div>
+
+        <div class="sidebar-label">CONTROL ROOM</div>
+        <nav class="navigation">
+            <a href="/dashboard" class="nav-item active">
+                <span class="nav-icon">▦</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="#queueListContainer" class="nav-item" id="nav-queue-btn">
+                <span class="nav-icon">⏳</span>
+                <span>Priority Queue</span>
+                <span class="nav-count" id="navQueueCount">0</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-label">PORTALS</div>
+        <nav class="navigation portal-navigation">
+            <a href="/requester" class="nav-item">
+                <span class="nav-icon">🏥</span>
+                <span>Requester Portal</span>
+            </a>
+            <a href="/provider" class="nav-item">
+                <span class="nav-icon">🩸</span>
+                <span>Provider Portal</span>
+            </a>
+            <a href="/patient" class="nav-item">
+                <span class="nav-icon">👤</span>
+                <span>Patient Tracking</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-label">ACTIVE BACKEND STATUS</div>
+        <div class="backend-features">
+            <div class="feature-tag working">✓ Hospital Verification</div>
+            <div class="feature-tag working">✓ Doctor Authorization</div>
+            <div class="feature-tag working">✓ Prescription Validation</div>
+            <div class="feature-tag working">✓ Urgency Priority Queue</div>
+        </div>
+
+        <div class="sidebar-bottom">
+            <div class="system-status">
+                <span class="status-dot"></span>
+                <div>
+                    <strong>System Online</strong>
+                    <small>FastAPI backend connected</small>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- HEADER -->
+        <header class="topbar">
+            <div class="mobile-menu" id="mobileMenu">☰</div>
+            <div class="page-heading">
+                <span class="eyebrow">DISPATCHER PORTAL · VERIFICATION & PRIORITIZATION</span>
+                <h1>Dispatcher Console</h1>
+                <p>Monitor verified requests, prioritize emergencies, and coordinate fulfillment.</p>
+            </div>
+            <div class="topbar-actions">
+                <button class="action-btn-red" id="popRequestBtn">
+                    ⚡ Process Next Request
+                </button>
+                <div class="dispatcher-profile">
+                    <div class="profile-avatar">D</div>
+                    <div class="profile-info">
+                        <strong>Dispatcher #01</strong>
+                        <span>Control Room · <a href="/login">Switch portal</a></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- STATS GRID -->
+        <section class="stats-grid">
+            <div class="stat-card" id="stat-total">
+                <div class="stat-icon gray">📁</div>
+                <div class="stat-content">
+                    <span>Total Received</span>
+                    <strong id="statReceivedCount">0</strong>
+                    <small>All-time logged</small>
+                </div>
+            </div>
+            <div class="stat-card" id="stat-verified">
+                <div class="stat-icon green">✓</div>
+                <div class="stat-content">
+                    <span>Verified & Queued</span>
+                    <strong id="statVerifiedCount">0</strong>
+                    <small>Ready for dispatch</small>
+                </div>
+            </div>
+            <div class="stat-card" id="stat-rejected">
+                <div class="stat-icon red">✗</div>
+                <div class="stat-content">
+                    <span>Rejected</span>
+                    <strong id="statRejectedCount">0</strong>
+                    <small>Failed validations</small>
+                </div>
+            </div>
+            <div class="stat-card" id="stat-pending">
+                <div class="stat-icon yellow">⚠</div>
+                <div class="stat-content">
+                    <span>Pending Clinical</span>
+                    <strong id="statPendingCount">0</strong>
+                    <small>Awaiting verification</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAIN TRIPLE COLUMN GRID -->
+        <div class="dashboard-grid">
+
+            <!-- COLUMN 1: QUEUE & SIMULATOR -->
+            <section class="grid-column left-column">
+                <div class="card-header">
+                    <h2>Priority Queue</h2>
+                    <span class="badge" id="queueSizeBadge">0 items</span>
+                </div>
+                <div class="queue-list" id="queueListContainer">
+                    <!-- Dynamic Queue Items -->
+                    <div class="empty-state">Queue is empty. Submit a request using the simulator.</div>
+                </div>
+
+                <!-- SIMULATOR PANEL -->
+                <div class="simulator-panel">
+                    <div class="card-header">
+                        <h2>Request Simulator</h2>
+                        <span class="badge yellow">Interactive</span>
+                    </div>
+                    <form id="simulatorForm" class="sim-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="simHospital">Hospital</label>
+                                <select id="simHospital" required>
+                                    <option value="H01">H01 - City Care Hospital (Delhi)</option>
+                                    <option value="H02">H02 - Metro General Hospital</option>
+                                    <option value="H03">H03 - Shanti Medical Centre</option>
+                                    <option value="H99">H99 - Invalid/Mock Hospital</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="simDoctor">Doctor</label>
+                                <select id="simDoctor" required>
+                                    <option value="D01">D01 - Dr. Arjun Sharma (H01 Authorized)</option>
+                                    <option value="D03">D03 - Dr. Rahul Singh (H02 Authorized)</option>
+                                    <option value="D11">D11 - Dr. Test Unauthorized</option>
+                                    <option value="D12">D12 - Dr. Wrong Hospital (D12 at H03)</option>
+                                    <option value="D99">D99 - Non-existent Doctor</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="simBlood">Blood Group</label>
+                                <select id="simBlood" required>
+                                    <option value="O-">O-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="A+">A+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="AB+">AB+</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="simUnits">Units Needed</label>
+                                <input type="number" id="simUnits" min="1" max="15" value="3" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="simUrgency">Urgency Input</label>
+                                <select id="simUrgency" required>
+                                    <option value="critical">Critical (Accident, Trauma)</option>
+                                    <option value="urgent">Urgent (Surgery)</option>
+                                    <option value="routine">Routine (Replenishment)</option>
+                                    <option value="scheduled">Scheduled (Planned Procedure)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="simPrescription">Prescription ID</label>
+                                <input type="text" id="simPrescription" value="RX10293"
+                                    placeholder="Leave empty for pending">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="simNotes">Clinical Note</label>
+                            <textarea id="simNotes" rows="2"
+                                placeholder="e.g., Patient in ER with active internal bleeding. Need matching blood immediately.">Active internal bleeding, requires transfusion.</textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            📤 Submit to Verification Engine
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- COLUMN 2: ACTIVE REQUEST DETAILS & RECOMMENDATIONS -->
+            <section class="grid-column center-column">
+                <div class="card-header">
+                    <h2>Active Request details</h2>
+                    <span class="badge" id="activeRequestStatus">No Active Request</span>
+                </div>
+
+                <div id="activeRequestDetails" class="active-request-card empty">
+                    <div class="empty-state">No request is currently active. Select a request from the queue or process
+                        the next item.</div>
+                </div>
+
+                <!-- VERIFICATION PIPELINE -->
+                <div class="pipeline-card">
+                    <div class="card-header">
+                        <h2>Verification Pipeline</h2>
+                        <span class="badge green">Live Backend</span>
+                    </div>
+                    <div class="pipeline-steps">
+                        <div class="pipeline-step" id="step-hospital">
+                            <div class="step-icon">🏥</div>
+                            <div class="step-details">
+                                <strong>Hospital Validation</strong>
+                                <span id="val-hospital-status">-</span>
+                            </div>
+                        </div>
+                        <div class="pipeline-step" id="step-doctor">
+                            <div class="step-icon">👨‍⚕️</div>
+                            <div class="step-details">
+                                <strong>Doctor Authorization</strong>
+                                <span id="val-doctor-status">-</span>
+                            </div>
+                        </div>
+                        <div class="pipeline-step" id="step-prescription">
+                            <div class="step-icon">📄</div>
+                            <div class="step-details">
+                                <strong>Prescription Validity</strong>
+                                <span id="val-prescription-status">-</span>
+                            </div>
+                        </div>
+                        <div class="pipeline-step" id="step-priority">
+                            <div class="step-icon">🚨</div>
+                            <div class="step-details">
+                                <strong>Urgency Prioritization</strong>
+                                <span id="val-priority-status">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ALLOCATION & RECOMMENDATIONS -->
+                <div class="allocation-section">
+                    <div class="card-header">
+                        <h2>Recommended Split-Fulfillment</h2>
+                        <div class="match-indicator">
+                            <span class="green-dot"></span>
+                            Matching Engine Active
+                        </div>
+                    </div>
+                    <div id="allocationContainer" class="allocation-container">
+                        <div class="empty-state">Fulfillment options will appear once a request is verified.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COLUMN 3: AUDIT TRAIL / ACTIVITY LOGGER -->
+            <section class="grid-column right-column">
+                <div class="card-header">
+                    <h2>Audit Trail Logs</h2>
+                    <span class="badge">Traceability</span>
+                </div>
+                <div class="audit-trail-container" id="auditTrailContainer">
+                    <div class="empty-state">Select a request to view its verification events.</div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- MAP SECTION -->
+        <section class="map-card">
+            <div class="map-header">
+                <div>
+                    <span class="section-eyebrow">LIVE GEOSPATIAL VIEW</span>
+                    <h2>Blood Supply Network Map</h2>
+                </div>
+                <div class="map-legend">
+                    <div>
+                        <span class="legend-marker hospital-marker"></span>
+                        Hospital
+                    </div>
+                    <div>
+                        <span class="legend-marker bank-marker"></span>
+                        Blood Bank
+                    </div>
+                </div>
+            </div>
+            <div id="map" class="map-container"></div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="dashboard-footer">
+            <span>RaktSetu Emergency Blood Intelligence Engine</span>
+            <span>System Status: <strong style="color: #22c55e;">ONLINE</strong></span>
+        </footer>
+
+    </main>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Dashboard JS -->
+    <script src="/static/js/dashboard.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RaktSetu | Patient Tracking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/portals.css">
+</head>
+<body><div class="ambient"></div>
+<div class="portal-shell">
+<aside class="portal-side"><div class="brand"><div class="brand-icon">🩸</div><div><h2>RaktSetu</h2><span>Patient Tracking</span></div></div>
+<div class="side-label">PATIENT / FAMILY</div><div class="side-links"><a class="active" href="/patient">⏱ Request Status</a><a href="#help">❓ Help</a></div>
+<div class="side-label">IMPORTANT</div><div class="side-links"><a href="/requester">🏥 Hospital Portal</a><a href="/login">🔐 Portal Login</a></div>
+<div class="side-footer">This view is for tracking an existing hospital request. Patients cannot directly request or release blood through RaktSetu.</div></aside>
+<main class="portal-main">
+<header class="portal-header"><div><div class="eyebrow">LIMITED PATIENT / FAMILY VIEW</div><h1>Track Blood Request</h1><p>See the status of a request created by your hospital or doctor.</p></div><div class="user-chip">Patient ID · P10291</div></header>
+<div class="card" style="margin-bottom:18px"><div class="form-grid"><div class="field"><label>Request ID</label><input value="R1238"></div><div class="field"><label>Patient ID</label><input value="P10291"></div></div><div class="action-row"><button class="primary-btn">Check Status</button></div></div>
+<div class="grid two"><div class="card"><h2>R1238 · Current Status</h2><div class="notice"><strong>Verified & Queued</strong><br>Critical request for 3 units of O-. Fulfillment recommendation is being coordinated with verified blood providers.</div><div class="timeline" style="margin-top:18px"><div class="timeline-item"><strong>Clinical request verified</strong><small>Hospital and doctor authorization complete</small></div><div class="timeline-item"><strong>Priority assigned</strong><small>CRITICAL · highest processing priority</small></div><div class="timeline-item"><strong>Blood matching</strong><small>2 units from Bank B + 1 unit from Bank C recommended</small></div><div class="timeline-item"><strong>Provider confirmation</strong><small>Awaiting final dispatch confirmation</small></div></div></div>
+<div class="card" id="help"><h2>Safety & Privacy</h2><p>RaktSetu does not allow patients to directly request or release blood. Your hospital and authorized doctor control the clinical request.</p><div class="notice" style="margin-top:14px">For a new requirement, contact your treating hospital/doctor. They must create and authorize the request.</div></div></div>
+</main></div></body></html>

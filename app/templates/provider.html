@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RaktSetu | Provider Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/portals.css">
+</head>
+<body><div class="ambient"></div>
+<div class="portal-shell">
+<aside class="portal-side"><div class="brand"><div class="brand-icon">🩸</div><div><h2>RaktSetu</h2><span>Provider Portal</span></div></div>
+<div class="side-label">BLOOD BANK</div><div class="side-links"><a class="active" href="/provider">📊 Overview</a><a href="#inventory">🧪 Inventory</a><a href="#requests">🚨 Emergency Requests</a><a href="#dispatch">🚚 Dispatch</a></div>
+<div class="side-label">OTHER PORTALS</div><div class="side-links"><a href="/requester">🏥 Requester</a><a href="/dashboard">🚨 Dispatcher</a><a href="/patient">👤 Patient View</a></div>
+<div class="side-footer">Verified provider: B02 · City Blood Center<br>Inventory changes are auditable.</div></aside>
+<main class="portal-main">
+<header class="portal-header"><div><div class="eyebrow">VERIFIED BLOOD PROVIDER</div><h1>Provider Portal</h1><p>Manage inventory and respond to verified hospital allocations.</p></div><div class="user-chip">B02 · City Blood Center</div></header>
+<div class="kpi-row"><div class="card stat"><div class="stat-icon">🩸</div><div><strong>12</strong><span>O- units available</span></div></div><div class="card stat"><div class="stat-icon">⚠</div><div><strong>2</strong><span>Units expiring soon</span></div></div><div class="card stat"><div class="stat-icon">🚨</div><div><strong>1</strong><span>Critical allocation</span></div></div></div>
+<section id="requests" class="grid two"><div class="card"><h2>Emergency Allocation</h2><div class="notice"><strong>CRITICAL · R1238</strong><br>Metro General Hospital requires 3 units of O-. Recommended allocation from your bank: <strong>2 units</strong>.</div><div class="status-list" style="margin-top:14px"><div class="status-item"><span>Compatibility</span><span class="tag green">MATCH</span></div><div class="status-item"><span>Stock available</span><strong>12 units</strong></div><div class="status-item"><span>Estimated ETA</span><strong>8 min</strong></div><div class="status-item"><span>Expiry</span><strong>2 days</strong></div></div><div class="action-row"><button class="primary-btn" onclick="alert('Demo: 2 units reserved for R1238.')">Accept & Reserve 2 Units</button><button class="secondary-btn">Reject</button></div></div>
+<div id="inventory" class="card"><h2>Inventory</h2><table class="table"><thead><tr><th>Group</th><th>Units</th><th>Expiry</th></tr></thead><tbody><tr><td>O-</td><td>12</td><td><span class="tag yellow">2 days</span></td></tr><tr><td>O+</td><td>25</td><td>6 days</td></tr><tr><td>A+</td><td>18</td><td>8 days</td></tr><tr><td>B+</td><td>21</td><td>5 days</td></tr></tbody></table></div></section>
+<section id="dispatch" class="card" style="margin-top:18px"><h2>Dispatch Confirmation</h2><p>After reservation, the provider confirms packaging, cold-chain readiness and dispatch handoff.</p><div class="action-row"><button class="secondary-btn">Mark Ready for Dispatch</button><button class="primary-btn">Confirm Dispatch</button></div></section>
+</main></div></body></html>

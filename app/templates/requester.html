@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RaktSetu | Requester Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/portals.css">
+</head>
+<body><div class="ambient"></div>
+<div class="portal-shell">
+<aside class="portal-side"><div class="brand"><div class="brand-icon">🩸</div><div><h2>RaktSetu</h2><span>Requester Portal</span></div></div>
+<div class="side-label">REQUESTER</div><div class="side-links">
+<a class="active" href="/requester">🏥 New Request</a><a href="#requests">📋 My Requests</a><a href="#status">⏱ Request Status</a>
+</div>
+<div class="side-label">OTHER PORTALS</div><div class="side-links"><a href="/provider">🩸 Provider</a><a href="/dashboard">🚨 Dispatcher</a><a href="/patient">👤 Patient View</a></div>
+<div class="side-footer">Authorized hospital / doctor access<br>Clinical verification required before fulfillment.</div></aside>
+<main class="portal-main">
+<header class="portal-header"><div><div class="eyebrow">HOSPITAL / DOCTOR ACCESS</div><h1>Requester Portal</h1><p>Create a clinically authorized blood request and monitor its fulfillment.</p></div><div class="user-chip">H02 · Metro General Hospital · Dr. Rahul Singh</div></header>
+<div class="notice" style="margin-bottom:18px"><strong>Verification policy:</strong> every request requires a verified hospital, authorized doctor and valid clinical prescription/request before it enters the priority queue.</div>
+<section class="grid two">
+<div class="card"><h2>Emergency Blood Request</h2><div class="form-grid">
+<div class="field"><label>Patient ID</label><input value="P10291" placeholder="Hospital patient ID"></div>
+<div class="field"><label>Prescription ID</label><input value="RX10293" placeholder="Prescription / clinical request ID"></div>
+<div class="field"><label>Blood Group</label><select><option>O-</option><option>O+</option><option>A-</option><option>A+</option><option>B-</option><option>B+</option><option>AB-</option><option>AB+</option></select></div>
+<div class="field"><label>Units Needed</label><input type="number" min="1" value="3"></div>
+<div class="field"><label>Clinical Urgency</label><select><option>Critical — life-threatening emergency</option><option>Urgent — serious requirement</option><option>Routine</option><option>Scheduled</option></select></div>
+<div class="field"><label>Request Channel</label><select><option>Hospital Web Portal</option><option>SMS</option><option>IVR / Voice</option></select></div>
+<div class="field full"><label>Clinical Note</label><textarea rows="4">Active internal bleeding, requires transfusion.</textarea></div>
+</div><div class="action-row"><button class="primary-btn" onclick="alert('Demo request created. Verification layer will validate hospital, doctor and prescription.')">Submit Verified Request</button><button class="secondary-btn">Save Draft</button></div></div>
+<div class="card"><h2>Request Lifecycle</h2><div class="timeline">
+<div class="timeline-item"><strong>1. Request submitted</strong><small>Hospital / authorized doctor</small></div>
+<div class="timeline-item"><strong>2. Clinical verification</strong><small>Hospital, doctor and prescription checks</small></div>
+<div class="timeline-item"><strong>3. Urgency prioritized</strong><small>Critical cases enter the highest-priority queue</small></div>
+<div class="timeline-item"><strong>4. Fulfillment matched</strong><small>Blood banks evaluated across quantity, compatibility, distance, expiry and ETA</small></div>
+<div class="timeline-item"><strong>5. Provider confirmation</strong><small>Blood bank confirms reservation and dispatch</small></div>
+</div></div>
+</section>
+<section id="requests" class="card" style="margin-top:18px"><h2>Recent Requests</h2><table class="table"><thead><tr><th>Request</th><th>Blood</th><th>Units</th><th>Priority</th><th>Status</th></tr></thead><tbody><tr><td>R1238</td><td>O-</td><td>3</td><td><span class="tag red">CRITICAL</span></td><td><span class="tag green">VERIFIED & QUEUED</span></td></tr><tr><td>R1231</td><td>A+</td><td>2</td><td><span class="tag yellow">URGENT</span></td><td><span class="tag green">FULFILLED</span></td></tr></tbody></table></section>
+</main></div></body></html>

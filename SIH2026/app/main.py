@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from itertools import count
 from fastapi.responses import JSONResponse, FileResponse
 from pathlib import Path
+from fastapi.staticfiles import StaticFiles
 
 from app.database import init_db, get_connection
 from app.seed import seed_database
@@ -23,7 +24,23 @@ app = FastAPI(
     description="Stage 1 - Request verification, urgency classification and prioritization",
     version="1.0.0"
 )
+# ============================================================
+# PERSON 3 - DISPATCHER DASHBOARD
+# ============================================================
 
+BASE_DIR = Path(__file__).resolve().parent
+
+app.mount(
+    "/static",
+    StaticFiles(directory=BASE_DIR / "static"),
+    name="static"
+)
+
+
+@app.get("/dashboard", include_in_schema=False)
+def dashboard():
+    dashboard_path = BASE_DIR / "templates" / "dashboard.html"
+    return FileResponse(dashboard_path)
 
 from fastapi import Request
 import traceback
@@ -524,4 +541,4 @@ def get_rejection_analysis():
         if reason in reasons:
             reasons[reason] += 1
             
-    return reasons
+    return reasons

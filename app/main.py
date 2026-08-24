@@ -26,7 +26,7 @@ from app.verification import (
 from app.urgency import classify_urgency
 from app.priority_queue import priority_queue
 from app.audit import log_event
-from app.fullfillment import fulfill_request
+from app.fullfillment import fulfill_request, preview_fulfillment
 from app.sms import (
     parse_sms_request,
     format_sms_response,
@@ -787,6 +787,11 @@ def pop_next_request():
 @app.post("/fullfillment/{request_id}")
 def fulfill_blood_request(request_id: str):
     return fulfill_request(request_id)
+
+
+@app.get("/fullfillment/{request_id}/preview")
+def preview_blood_request(request_id: str):
+    return preview_fulfillment(request_id)
 
 
 @app.get("/queue")
